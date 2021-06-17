@@ -5,15 +5,18 @@ distanceMatriz = list()
 size = -1
 pos = 0
 
+
 def calculate_tour_distance(tour, file_dimension, distanceMatriz):
     dist = 0
     print(distanceMatriz[0][5])
     for i in range(0, file_dimension - 1):
         dist += distanceMatriz[tour[i]][tour[i+1]]
-    print(dist)
-    dist += distanceMatriz[tour[file_dimension - 1]][tour[0]];
+        if i % 50 == 0:
+            print(f"abc {dist}")
+    dist += distanceMatriz[tour[file_dimension - 1]][tour[0]]
     print(f"Comprimento da rota: {dist}")
     return dist
+
 
 def euc_2d(values: list):
     """for i in range(len(values)):
@@ -33,6 +36,7 @@ def euc_2d(values: list):
             row.append(int(dist + 0.5))
         distanceMatriz.append(row)
     print("Quantidade de cidades visitadas: ", len(distanceMatriz))
+
 
 def att(values: list):
     for x1, y1 in values:
@@ -56,6 +60,7 @@ def ceil_2d(values: list):
             row.append(int(dist + 0.5))
         distanceMatriz.append(row)
     print("Quantidade de cidades visitadas: ", len(distanceMatriz))
+
 
 def main(input_file_path):
     tour = list()

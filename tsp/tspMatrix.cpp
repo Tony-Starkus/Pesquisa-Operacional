@@ -128,7 +128,7 @@ int main(const int argc, const char **inputFile)
 	for (int i = 0; i < size; i++)
 		tour[i] = i;
 
-	printf("%d\n", distanceMatrix[0][5]);
+	//printf("%d\n", distanceMatrix[0][5]);
 	printf("Comprimento da rota: %d\n", calculateTourDistance(tour));
 }
 
@@ -138,6 +138,9 @@ int calculateTourDistance(int *tour)
 	for (int i = 0; i < size - 1; i++)
 	{
 		dist += distanceMatrix[tour[i]][tour[i + 1]];
+		if(i % 50 == 0) {
+			printf("abc %d\n", dist);
+		}
 	}
 	dist += distanceMatrix[tour[size - 1]][tour[0]];
 	return dist;
