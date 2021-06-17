@@ -1,10 +1,19 @@
 import sys
 from math import sqrt
 
+distanceMatriz = list()
+size = -1
+pos = 0
 
-def calculate_tour_distance(tour):
-    pass
-
+def calculate_tour_distance(tour, file_dimension, distanceMatriz):
+    dist = 0
+    print(distanceMatriz[0][5])
+    for i in range(0, file_dimension - 1):
+        dist += distanceMatriz[tour[i]][tour[i+1]]
+    print(dist)
+    dist += distanceMatriz[tour[file_dimension - 1]][tour[0]];
+    print(f"Comprimento da rota: {dist}")
+    return dist
 
 def euc_2d(values: list):
     """for i in range(len(values)):
@@ -20,11 +29,10 @@ def euc_2d(values: list):
         for x2, y2 in values:
             xd = x1 - x2
             yd = y1 - y2
-            dist = sqrt(xd*xd + yd*yd)
-            row.append(dist + 0.5)
+            dist = sqrt((xd * xd) + (yd * yd))
+            row.append(int(dist + 0.5))
         distanceMatriz.append(row)
-    print(len(distanceMatriz))
-
+    print("Quantidade de cidades visitadas: ", len(distanceMatriz))
 
 def att(values: list):
     for x1, y1 in values:
@@ -33,9 +41,9 @@ def att(values: list):
             xd = x1 - x2
             yd = y1 - y2
             dist = sqrt(xd*xd + yd*yd)
-            row.append(dist + 0.000000001)
+            row.append(int(dist + 0.000000001))
         distanceMatriz.append(row)
-    print(len(distanceMatriz))
+    print("Quantidade de cidades visitadas: ", len(distanceMatriz))
 
 
 def ceil_2d(values: list):
@@ -45,25 +53,18 @@ def ceil_2d(values: list):
             xd = x1 - x2
             yd = y1 - y2
             dist = sqrt(xd*xd + yd*yd) / 10.0
-            row.append(dist + 0.5)
+            row.append(int(dist + 0.5))
         distanceMatriz.append(row)
-    print(len(distanceMatriz))
-
-
-distanceMatriz = list()
-size = -1
-pos = 0
-
+    print("Quantidade de cidades visitadas: ", len(distanceMatriz))
 
 def main(input_file_path):
     tour = list()
     _type = list()
-    #if arg < 2:
-     #   print(f"asddwdw")
-      #  exit(1)
+    # if arg < 2:
+    #   print(f"asddwdw")
+    #  exit(1)
     s = list()
 
-    print("asadwdw")
     with open(input_file_path) as input_file:
         try:
             # get lines
@@ -84,7 +85,8 @@ def main(input_file_path):
             # VALIDATIONS
             # Check if instance is valid
             if file_edge_weight_type not in ("EUC_2D", "ATT", "CEIL_2D"):
-                print(f"Error: Can't calculate using {file_edge_weight_type}. Use = {('EUC_2D', 'ATT', 'CEIL_2D')}")
+                print(
+                    f"Error: Can't calculate using {file_edge_weight_type}. Use = {('EUC_2D', 'ATT', 'CEIL_2D')}")
                 exit(1)
 
             # Check if file is type TSP
@@ -104,7 +106,8 @@ def main(input_file_path):
 
                 split_line = line.strip().split(" ")
                 node = int(split_line[0])
-                coord = tuple((float(split_line[1].strip()), float(split_line[2].strip())))
+                coord = tuple(
+                    (float(split_line[1].strip()), float(split_line[2].strip())))
                 nodes.append(node)
                 values.append(coord)
                 # print(f"node={node} coord={coord}")
@@ -120,7 +123,7 @@ def main(input_file_path):
                 att(values)
 
             tour = [i for i in range(len(values))]
-            print(len(tour))
+            calculate_tour_distance(tour, file_dimension, distanceMatriz)
 
         except IOError:
             print(f"O arquivo {input_file_path} não existe")
@@ -130,4 +133,4 @@ file1 = "./tsp/tsp225.tsp"  # EUC_2D
 file2 = "./tsp/dsj1000ceil.tsp"  # CEIL_2D
 file3 = "./tsp/att48.tsp"  # ATT
 
-main(file2)
+main(file1)
