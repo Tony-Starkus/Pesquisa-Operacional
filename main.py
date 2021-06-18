@@ -149,7 +149,7 @@ def main(input_file_path):
             actual_node = root_node
             fila = [actual_node]
             while len(fila) != file_dimension:
-                next_node = simulated_annealing(actual_node, distanceMatriz)
+                next_node = simulated_annealing(actual_node, distanceMatriz, fila)
                 fila.append(next_node)
                 actual_node = next_node
             # print(len(fila))
@@ -160,6 +160,7 @@ def main(input_file_path):
             print(f"O arquivo {input_file_path} não existe")
 
 
+# file1 = "./tsp/tsp225.tsp"  # EUC_2D
 file1 = "./tsp/eil51.tsp"  # EUC_2D
 file2 = "./tsp/dsj1000ceil.tsp"  # CEIL_2D
 file3 = "./tsp/att48.tsp"  # ATT
