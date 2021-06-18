@@ -84,16 +84,31 @@ int main(const int argc, const char **inputFile)
 		int aux = 0;
 		for (int i = 0; i < size; i++)
 		{
+			if(i == 6) {
+				for (int j = 0; j < size; j++)
+				{
+					aux = 0;
+					double xd = x[i] - x[j];
+					double yd = y[i] - y[j];
+					double dist = sqrt(xd * xd + yd * yd);
+					distanceMatrix[i][j] = (int)(dist + 0.5);
+					aux = (int)(dist +0.5); //calculating the euclidean distance, rounding to int and storing in the distance matrix
+					printf("%d %d \n", j, aux);
+				}
+				exit(1);
+			}
 			for (int j = 0; j < size; j++)
 			{
+				aux = 0;
 				double xd = x[i] - x[j];
 				double yd = y[i] - y[j];
 				double dist = sqrt(xd * xd + yd * yd);
 				distanceMatrix[i][j] = (int)(dist + 0.5);
-				aux += (int)(dist +0.5); //calculating the euclidean distance, rounding to int and storing in the distance matrix
+				aux = (int)(dist +0.5); //calculating the euclidean distance, rounding to int and storing in the distance matrix
+			
 			}
-			printf("%d %d \n", i, aux);
-			aux = 0;
+			//printf("%d %d \n", i, aux);
+			//aux = 0;
 		}
 	}
 	else if (!strcmp(type, "CEIL_2D"))

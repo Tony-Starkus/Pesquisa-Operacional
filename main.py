@@ -43,6 +43,7 @@ def euc_2d(values: list):
             dis
             print(values[i][0])
             print(values[j][1])"""
+    aux = 0
     for x1, y1 in values:
         row = []
         for x2, y2 in values:
@@ -50,6 +51,8 @@ def euc_2d(values: list):
             yd = y1 - y2
             dist = sqrt((xd * xd) + (yd * yd))
             row.append(int(dist + 0.5))
+        # print(f"i:{aux} sum({aux}):{sum(row)}")
+        aux += 1
         distanceMatriz.append(row)
     print("Quantidade de cidades visitadas: ", len(distanceMatriz))
 
@@ -145,7 +148,7 @@ def main(input_file_path):
 
             tour = [i for i in range(len(values))]
 
-            root_node = 0
+            root_node = 7
             actual_node = root_node
             fila = [actual_node]
             while len(fila) != file_dimension:
@@ -153,6 +156,7 @@ def main(input_file_path):
                 fila.append(next_node)
                 actual_node = next_node
             # print(len(fila))
+
             busca_gulosa(root_node, distanceMatriz, nodes)
             calculate_tour_distance(tour, file_dimension, fila, root_node)
 
