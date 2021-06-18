@@ -7,15 +7,22 @@ size = -1
 pos = 0
 
 fila = [0, 5, 10]
+# node = 0
 
 
-node = 0
-def calculate_tour_distance(tour, file_dimension, fila):
+def calculate_tour_distance(tour, file_dimension, fila: list, root_node: int):
     dist = 0
     """print(distanceMatriz[0][5])"""
+    print(f"node={root_node}")
 
     for i in range(file_dimension - 1):
-        dist += distanceMatriz[node][i + 1]
+        dist += distanceMatriz[tour[i]][tour[i + 1]]
+    print(f"dist: {dist}")
+    exit(1)
+
+    dist += distanceMatriz[tour[file_dimension - 1]][tour[0]]
+    """for i in range(file_dimension - 1):
+        dist += distanceMatriz[fila[i]][fila[i + 1]]"""
 
     """for i in range(0, file_dimension - 1):
         dist += distanceMatriz[tour[i]][tour[i+1]]
@@ -144,9 +151,9 @@ def main(input_file_path):
                 next_node = simulated_annealing(actual_node, distanceMatriz)
                 fila.append(next_node)
                 actual_node = next_node
-            #print(len(fila))
+            # print(len(fila))
 
-            calculate_tour_distance(tour, file_dimension, fila)
+            calculate_tour_distance(tour, file_dimension, fila, root_node)
         except IOError:
             print(f"O arquivo {input_file_path} não existe")
 

@@ -137,10 +137,13 @@ int calculateTourDistance(int *tour)
 	for (int i = 0; i < size - 1; i++)
 	{
 		dist += distanceMatrix[tour[i]][tour[i + 1]];
-		if(i % 50 == 0) {
-			printf("abc %d\n", dist);
+		if(i == 200) {
+
 		}
 	}
+	printf("dist: %d\n", dist);
 	dist += distanceMatrix[tour[size - 1]][tour[0]];
+	printf("dist after: %d\n", dist);
+    exit(1);
 	return dist;
 }

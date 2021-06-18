@@ -2,6 +2,7 @@ import random
 import math
 import sys
 
+
 def simulated_annealing(estado_inicial: int, distanceMatriz: list):
     """
     Este algoritmo procura a melhor solução usando Annealing.
@@ -10,7 +11,7 @@ def simulated_annealing(estado_inicial: int, distanceMatriz: list):
     temp_inicial = 200
     temp_final = 1
     temp_atual = temp_inicial
-    resfriamento = 2
+    resfriamento = 0.1
 
     estado_atual = estado_inicial  # 0
     solucao = estado_atual
@@ -19,7 +20,7 @@ def simulated_annealing(estado_inicial: int, distanceMatriz: list):
     while temp_atual > temp_final:
         # print(melhor_distancia)
         vizinho = random.randrange(len(distanceMatriz))
-       # print(vizinho)
+        # print(vizinho)
 
         if distanceMatriz[estado_atual][vizinho] < melhor_distancia:
             melhor_distancia = distanceMatriz[estado_atual][vizinho]
