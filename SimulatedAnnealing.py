@@ -8,7 +8,7 @@ def simulated_annealing(estado_inicial: int, distanceMatriz: list):
     Este algoritmo procura a melhor solução usando Annealing.
     estado_inicial: 
     """
-    temp_inicial = 200
+    temp_inicial = 100
     temp_final = 1
     temp_atual = temp_inicial
     resfriamento = 0.1

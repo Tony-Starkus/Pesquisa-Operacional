@@ -1,6 +1,7 @@
 import sys
 from math import sqrt
 from SimulatedAnnealing import simulated_annealing
+from tspGreedy import busca_gulosa
 
 distanceMatriz = list()
 size = -1
@@ -16,7 +17,7 @@ def calculate_tour_distance(tour, file_dimension, fila: list, root_node: int):
     print(f"node={root_node}")
 
     for i in range(file_dimension - 1):
-        dist += distanceMatriz[tour[i]][tour[i + 1]]
+        dist += distanceMatriz[fila[i]][fila[i + 1]]
     print(f"dist: {dist}")
     exit(1)
 
@@ -152,13 +153,14 @@ def main(input_file_path):
                 fila.append(next_node)
                 actual_node = next_node
             # print(len(fila))
-
+            busca_gulosa(root_node, distanceMatriz, nodes)
             calculate_tour_distance(tour, file_dimension, fila, root_node)
+
         except IOError:
             print(f"O arquivo {input_file_path} não existe")
 
 
-file1 = "./tsp/tsp225.tsp"  # EUC_2D
+file1 = "./tsp/eil51.tsp"  # EUC_2D
 file2 = "./tsp/dsj1000ceil.tsp"  # CEIL_2D
 file3 = "./tsp/att48.tsp"  # ATT
 
