@@ -1,19 +1,27 @@
 import sys
 from math import sqrt
+from SimulatedAnnealing import simulated_annealing
 
 distanceMatriz = list()
 size = -1
 pos = 0
 
+fila = [0, 5, 10]
 
-def calculate_tour_distance(tour, file_dimension, distanceMatriz):
+
+node = 0
+def calculate_tour_distance(tour, file_dimension, fila):
     dist = 0
-    print(distanceMatriz[0][5])
-    for i in range(0, file_dimension - 1):
+    """print(distanceMatriz[0][5])"""
+
+    for i in range(file_dimension - 1):
+        dist += distanceMatriz[node][i + 1]
+
+    """for i in range(0, file_dimension - 1):
         dist += distanceMatriz[tour[i]][tour[i+1]]
         if i % 50 == 0:
             print(f"abc {dist}")
-    dist += distanceMatriz[tour[file_dimension - 1]][tour[0]]
+    dist += distanceMatriz[tour[file_dimension - 1]][tour[0]]"""
     print(f"Comprimento da rota: {dist}")
     return dist
 
@@ -128,8 +136,17 @@ def main(input_file_path):
                 att(values)
 
             tour = [i for i in range(len(values))]
-            calculate_tour_distance(tour, file_dimension, distanceMatriz)
 
+            root_node = 0
+            actual_node = root_node
+            fila = [actual_node]
+            while len(fila) != file_dimension:
+                next_node = simulated_annealing(actual_node, distanceMatriz)
+                fila.append(next_node)
+                actual_node = next_node
+            #print(len(fila))
+
+            calculate_tour_distance(tour, file_dimension, fila)
         except IOError:
             print(f"O arquivo {input_file_path} não existe")
 

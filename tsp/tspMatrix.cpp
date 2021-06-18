@@ -122,7 +122,6 @@ int main(const int argc, const char **inputFile)
 			}
 		}
 	}
-
 	
 	int tour[size];
 	for (int i = 0; i < size; i++)
