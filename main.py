@@ -11,16 +11,12 @@ fila = [0, 5, 10]
 # node = 0
 
 
-def calculate_tour_distance(tour, file_dimension, fila: list, root_node: int):
+def calculate_tour_distance(tour, file_dimension):
     dist = 0
     """print(distanceMatriz[0][5])"""
-    print(f"node={root_node}")
 
     for i in range(file_dimension - 1):
-        dist += distanceMatriz[fila[i]][fila[i + 1]]
-    print(f"dist: {dist}")
-    exit(1)
-
+        dist += distanceMatriz[tour[i]][tour[i + 1]]
     dist += distanceMatriz[tour[file_dimension - 1]][tour[0]]
     """for i in range(file_dimension - 1):
         dist += distanceMatriz[fila[i]][fila[i + 1]]"""
@@ -150,6 +146,8 @@ def main(input_file_path):
 
             root_node = 7
             actual_node = root_node
+
+            # OUTRO ALGORITMO
             fila = [actual_node]
             while len(fila) != file_dimension:
                 next_node = simulated_annealing(actual_node, distanceMatriz, fila)
@@ -157,15 +155,15 @@ def main(input_file_path):
                 actual_node = next_node
             # print(len(fila))
 
-            busca_gulosa(root_node, distanceMatriz, nodes)
-            calculate_tour_distance(tour, file_dimension, fila, root_node)
+            fila1 = busca_gulosa(root_node, distanceMatriz)
+            calculate_tour_distance(fila1, file_dimension)
 
         except IOError:
             print(f"O arquivo {input_file_path} não existe")
 
 
-# file1 = "./tsp/tsp225.tsp"  # EUC_2D
 file1 = "./tsp/eil51.tsp"  # EUC_2D
+# file1 = "./tsp/eil51.tsp"  # EUC_2D
 file2 = "./tsp/dsj1000ceil.tsp"  # CEIL_2D
 file3 = "./tsp/att48.tsp"  # ATT
 
