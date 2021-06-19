@@ -6,6 +6,8 @@ from tspGreedy import busca_gulosa
 distanceMatriz = list()
 size = -1
 pos = 0
+best_node = None
+best_tour = []
 
 fila = [0, 5, 10]
 # node = 0
@@ -26,7 +28,7 @@ def calculate_tour_distance(tour, file_dimension):
         if i % 50 == 0:
             print(f"abc {dist}")
     dist += distanceMatriz[tour[file_dimension - 1]][tour[0]]"""
-    print(f"Comprimento da rota: {dist}")
+    # print(f"Comprimento da rota: {dist}")
     return dist
 
 
@@ -142,21 +144,37 @@ def main(input_file_path):
                 print("c")
                 att(values)
 
-            tour = [i for i in range(len(values))]
-
+            best_dist = sys.maxsize
             root_node = 7
+
+            for i in range(len(nodes)):
+                tour = busca_gulosa(i, distanceMatriz)
+                dist = calculate_tour_distance(tour, file_dimension)
+                if dist < best_dist:
+                    best_dist = dist
+                    global best_node
+                    global best_tour
+                    best_node = i
+                    best_tour = tour
+
+            print(f"best_node={best_node}")
+            print(f"best_dist={best_dist}")
+            print(f"best_tour={best_tour}")
+
             actual_node = root_node
 
             # OUTRO ALGORITMO
-            fila = [actual_node]
-            while len(fila) != file_dimension:
-                next_node = simulated_annealing(actual_node, distanceMatriz, fila)
-                fila.append(next_node)
-                actual_node = next_node
+            # fila = [actual_node]
+            # while len(fila) != file_dimension:
+            #    next_node = simulated_annealing(distanceMatriz, best_tour, greed_dist=best_dist)
+            #    fila.append(next_node)
+            #    actual_node = next_node
             # print(len(fila))
 
-            fila1 = busca_gulosa(root_node, distanceMatriz)
-            calculate_tour_distance(fila1, file_dimension)
+            sa_best_tour, sa_best_dist = simulated_annealing(distanceMatriz, best_tour, greed_dist=best_dist)
+
+            print(f"sa_best_tour={sa_best_tour}")
+            print(f"sa_best_dist={sa_best_dist}")
 
         except IOError:
             print(f"O arquivo {input_file_path} não existe")
