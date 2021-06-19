@@ -10,7 +10,6 @@ def calculate_tour_distance(tour, file_dimension, distance_matriz):
     for i in range(file_dimension - 1):
         dist += distance_matriz[tour[i]][tour[i + 1]]
     dist += distance_matriz[tour[file_dimension - 1]][tour[0]]
-    print(f"Comprimento da rota: {dist}")
     return dist
 
 
@@ -24,32 +23,34 @@ def simulated_annealing(distance_matriz: list, greed_tour: list, greed_dist):
     """
     fila = greed_tour
     temp_inicial = 100
-    temp_final = 3
+    temp_final = 1
     temp_atual = temp_inicial
-    resfriamento = 1
+    resfriamento = .1
 
     melhor_distancia = greed_dist
 
     while temp_atual > temp_final:
         # print(melhor_distancia)
         val1, val2 = [random.randrange(len(greed_tour)) for x in range(2)]
+
         while val2 == val1:
             val2 = random.randrange(len(greed_tour))
 
         old_val1 = fila[val1]
         fila[val1] = fila[val2]
         fila[val2] = old_val1
-
+        # print(fila)
         dist = calculate_tour_distance(fila, len(greed_tour), distance_matriz)
-
-        if dist < greed_dist or random.uniform(0, 1) < math.exp(dist / temp_atual):
-            global melhor_tour
+        # print(f"dist={dist} melhor_dist={melhor_distancia}")
+        if dist < melhor_distancia:
             melhor_distancia = dist
-            melhor_tour = fila
-
-        if greed_dist < melhor_distancia:
-            print("a")
-            melhor_tour = greed_tour
+        elif random.uniform(0, 1) < math.exp(-dist / temp_atual):
+            # print(f"dist={dist} melhor_dist={melhor_distancia}")
+            melhor_distancia = dist
+        else:
+            old_val1 = fila[val1]
+            fila[val1] = fila[val2]
+            fila[val2] = old_val1
 
         temp_atual -= resfriamento
 
@@ -61,8 +62,7 @@ def simulated_annealing(distance_matriz: list, greed_tour: list, greed_dist):
                 melhor_distancia = distance_matriz[estado_atual][vizinho]
                 solucao = vizinho
         # decrement the temperature"""
-
-    return melhor_tour, melhor_distancia
+    return fila, melhor_distancia
 
 
 def get_custo(state, distanceMatriz):
