@@ -1,7 +1,19 @@
+""" 
+    Algoritmo desenvolvido para a atividade de Pesquisa Operacional 
+    no curso de Bacharelado em Sistemas de Informação
+    na universidade Federal do Acre.
+
+    Docente: Prof. Dr. Olacir Rodrigues Castro Júnior
+
+    Autor 1: Thalisson Bandeira Araújo
+    Autor 2: Evandro Cavalcante de Araújo Júnior
+
+    Rio Branco - Acre       20/06/2021
+"""
 import sys
 from math import sqrt
 from SimulatedAnnealing import simulated_annealing
-from tspGreedy import busca_gulosa
+from tspGreedy import greedy_search
 
 distanceMatriz = list()
 size = -1
@@ -9,39 +21,24 @@ pos = 0
 best_node = None
 best_tour = []
 
-fila = [0, 5, 10]
-# node = 0
-
 
 def calculate_tour_distance(tour, file_dimension):
+    """
+        This function calculates the provided tour distance.
+    """
     dist = 0
-    """print(distanceMatriz[0][5])"""
 
     for i in range(file_dimension - 1):
         dist += distanceMatriz[tour[i]][tour[i + 1]]
     dist += distanceMatriz[tour[file_dimension - 1]][tour[0]]
-    """for i in range(file_dimension - 1):
-        dist += distanceMatriz[fila[i]][fila[i + 1]]"""
-
-    """for i in range(0, file_dimension - 1):
-        dist += distanceMatriz[tour[i]][tour[i+1]]
-        if i % 50 == 0:
-            print(f"abc {dist}")
-    dist += distanceMatriz[tour[file_dimension - 1]][tour[0]]"""
-    # print(f"Comprimento da rota: {dist}")
+    
     return dist
 
 
 def euc_2d(values: list):
-    """for i in range(len(values)):
-        for j in range(len(values)):
-            xd = values[i][0] - values[j][0]
-            xd = values[i][1] - values[j][1]
-            dist = sqrt(xd * xd + yd * yd)
-            dis
-            print(values[i][0])
-            print(values[j][1])"""
-    aux = 0
+    """
+        This function calculates the distance between the nodes using euclidean distance.
+    """
     for x1, y1 in values:
         row = []
         for x2, y2 in values:
@@ -49,13 +46,13 @@ def euc_2d(values: list):
             yd = y1 - y2
             dist = sqrt((xd * xd) + (yd * yd))
             row.append(int(dist + 0.5))
-        # print(f"i:{aux} sum({aux}):{sum(row)}")
-        aux += 1
         distanceMatriz.append(row)
-    print("Quantidade de cidades visitadas: ", len(distanceMatriz))
 
 
 def att(values: list):
+    """
+        This function calculates the distance between the nodes using ATT.
+    """
     for x1, y1 in values:
         row = []
         for x2, y2 in values:
@@ -64,10 +61,12 @@ def att(values: list):
             dist = sqrt(xd*xd + yd*yd)
             row.append(int(dist + 0.000000001))
         distanceMatriz.append(row)
-    print("Quantidade de cidades visitadas: ", len(distanceMatriz))
 
 
 def ceil_2d(values: list):
+    """
+        This function calculates the distance between the nodes using CEIL.
+    """
     for x1, y1 in values:
         row = []
         for x2, y2 in values:
@@ -76,15 +75,11 @@ def ceil_2d(values: list):
             dist = sqrt(xd*xd + yd*yd) / 10.0
             row.append(int(dist + 0.5))
         distanceMatriz.append(row)
-    print("Quantidade de cidades visitadas: ", len(distanceMatriz))
 
 
 def main(input_file_path):
     tour = list()
     _type = list()
-    # if arg < 2:
-    #   print(f"asddwdw")
-    #  exit(1)
     s = list()
 
     with open(input_file_path) as input_file:
@@ -98,11 +93,12 @@ def main(input_file_path):
             file_type = lines[2].split(" ")[2].strip()
             file_dimension = int(lines[3].split(" ")[2])
             file_edge_weight_type = lines[4].split(" ")[2].strip()
-            print(f"file_name={file_name}\n"
-                  f"file_comment={file_comment}\n"
-                  f"file_type={file_type}\n"
-                  f"file_dimension={file_dimension}\n"
-                  f"file_edge_weight_type={file_edge_weight_type}")
+            print(f"Header:\n"
+                  f"file name = {file_name}\n"
+                  f"file comment = {file_comment}\n"
+                  f"file type = {file_type}\n"
+                  f"file dimension = {file_dimension}\n"
+                  f"file edge weight type = {file_edge_weight_type}")
 
             # VALIDATIONS
             # Check if instance is valid
@@ -132,23 +128,20 @@ def main(input_file_path):
                     (float(split_line[1].strip()), float(split_line[2].strip())))
                 nodes.append(node)
                 values.append(coord)
-                # print(f"node={node} coord={coord}")
 
             if file_edge_weight_type == "EUC_2D":
-                print("a")
                 euc_2d(values)
             elif file_edge_weight_type == "CEIL_2D":
-                print("b")
                 ceil_2d(values)
             elif file_edge_weight_type == "ATT":
-                print("c")
                 att(values)
 
             best_dist = sys.maxsize
-            root_node = 7
 
+            # Searching the best tour using tspGreedy
             for i in range(len(nodes)):
-                tour = busca_gulosa(i, distanceMatriz)
+                #print(i)
+                tour = greedy_search(i, distanceMatriz)
                 dist = calculate_tour_distance(tour, file_dimension)
                 if dist < best_dist:
                     best_dist = dist
@@ -157,31 +150,23 @@ def main(input_file_path):
                     best_node = i
                     best_tour = tour
 
-            print(f"best_node={best_node}")
-            print(f"best_dist={best_dist}")
-            print(f"best_tour={best_tour}")
+            # Printing the best distance and tour of Greedy Search algorithm
+            print("\nGreedy: ")
+            print(f"best greedy tour = {best_tour}")
+            print(f"best greedy dist = {best_dist}")
+    
+            sa_best_tour, sa_best_dist = simulated_annealing(distanceMatriz, best_tour, greedy_dist=best_dist)
 
-            actual_node = root_node
-
-            # OUTRO ALGORITMO
-            # fila = [actual_node]
-            # while len(fila) != file_dimension:
-            #    next_node = simulated_annealing(distanceMatriz, best_tour, greed_dist=best_dist)
-            #    fila.append(next_node)
-            #    actual_node = next_node
-            # print(len(fila))
-
-            sa_best_tour, sa_best_dist = simulated_annealing(distanceMatriz, best_tour, greed_dist=best_dist)
-
-            print(f"sa_best_tour={sa_best_tour}")
-            print(f"sa_best_dist={sa_best_dist}")
+            # Printing the best distance and tour of Simulated Annealing algorithm
+            print("\nSimmulated Annealing: ")
+            print(f"best SA tour = {sa_best_tour}")
+            print(f"best SA dist = {sa_best_dist}")
 
         except IOError:
             print(f"O arquivo {input_file_path} não existe")
 
 
 file1 = "./tsp/eil51.tsp"  # EUC_2D
-# file1 = "./tsp/eil51.tsp"  # EUC_2D
 file2 = "./tsp/dsj1000ceil.tsp"  # CEIL_2D
 file3 = "./tsp/att48.tsp"  # ATT
 

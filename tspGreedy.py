@@ -1,27 +1,25 @@
-"""
-Algoritmo responsavel por fazer Busca Gulosa
-"""
-import random
-import math
 
 
-def busca_gulosa(node_atual, distance_matriz: list):
-    result = [node_atual]
+def greedy_search(current_node, distance_matriz: list):
+    """
+        This algorithm searches for the best solution using Greedy Search
+    """
+    result = [current_node]
 
     while len(result) != len(distance_matriz):
-        found = False
+        neighbour_found = False
         for i in range(1, len(distance_matriz)):
-            actual_dist = sorted(distance_matriz[node_atual])[i]
+            current_dist = sorted(distance_matriz[current_node])[i]
 
-            for index, dist in enumerate(distance_matriz[node_atual]):
-                if dist == actual_dist and index not in result:
-                    vizinho = index
-                    result.append(vizinho)
-                    node_atual = vizinho
-                    found = True
+            for index, dist in enumerate(distance_matriz[current_node]):
+                if dist == current_dist and index not in result:
+                    neighbour = index
+                    result.append(neighbour)
+                    current_node = neighbour
+                    neighbour_found = True
                     break
 
-            if found:
+            if neighbour_found:
                 break
 
     return result
